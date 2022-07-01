@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Item from './Item';
 // const axios = require('axios').default;
 const Home = () => {
 
@@ -8,6 +9,15 @@ const Home = () => {
 
 
 
+    // use effect for showing added tasks
+    useEffect(() => {
+        fetch('http://localhost:5000/tasks')
+        .then(res => res.json())
+        .then(data => setTodo(data))
+    },[])
+
+
+    
     const handleSubmit = event => {
         event.preventDefault();
         console.log('form submitted');
@@ -57,9 +67,9 @@ const Home = () => {
     
 
     return (
-        <div className='bg-blue-100 py-20 h-[100vh] '>
+        <div className='bg-blue-100 py-20 '>
             <h1 className='text-center text-2xl font-bold '>Add To Task</h1>
-            <div>
+            <div className='h-full'>
                 <form onSubmit={handleSubmit}>
                     <input
                         className='border-4 border-dashed border-green-700 bg-green-100 outline-none p-3 my-4 text-black '
@@ -80,17 +90,11 @@ const Home = () => {
                     
                 </form>
             </div>
-
-            <div className="list">
-          {todo.map(item => <div
-            key={item._id}
-            text={item.text}
+            <div className="list   ">
+          {todo.map(item => <Item key={item._id} text={item.text}
             remove={() => deleteTodo(item._id)}
             update={() => updateTodo(item._id, item.text)} />)}
         </div>
-
-
-
         </div>
     );
 };
