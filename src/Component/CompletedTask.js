@@ -5,7 +5,7 @@ const CompletedTask = () => {
     // const [todo, setTodo] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/completedTask')
+        fetch('https://kinder-backbacon-55938.herokuapp.com/completedTask')
             .then(res => res.json())
             .then(data => setCompletedTask(data))
     }, [])
@@ -15,7 +15,7 @@ const CompletedTask = () => {
     const deleteData = (id) => {
         const proceed = window.confirm('Are you sure  delete this task');
         if (proceed) {
-            const url = `http://localhost:5000/completedTask/${id}`;
+            const url = `https://kinder-backbacon-55938.herokuapp.com/completedTask/${id}`;
             fetch(url, {
                 method: "DELETE"
             })

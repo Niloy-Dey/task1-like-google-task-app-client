@@ -13,7 +13,7 @@ const Home = () => {
 
     // use effect for showing added tasks
     useEffect(() => {
-        fetch('http://localhost:5000/tasks')
+        fetch('https://kinder-backbacon-55938.herokuapp.com/tasks')
             .then(res => res.json())
             .then(data => setTodo(data))
     }, [])
@@ -26,7 +26,7 @@ const Home = () => {
         console.log(text);
         const task = { text };
 
-        const url = 'http://localhost:5000/tasks';
+        const url = 'https://kinder-backbacon-55938.herokuapp.com/tasks';
         fetch(url, {
             method: 'POST',
             headers: {
@@ -52,7 +52,7 @@ const Home = () => {
     const addUpdateTodo = (id, text) => {
         const newData = text;
         if (isUpdating === "") {
-            fetch(`http://localhost:5000/tasks/${text}`, {
+            fetch(`https://kinder-backbacon-55938.herokuapp.com/tasks/${text}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
@@ -80,7 +80,7 @@ const Home = () => {
     const deleteTodo = (id) => {
         const proceed = window.confirm('Are you sure  delete this task');
         if (proceed) {
-            const url = `http://localhost:5000/tasks/${id}`;
+            const url = `https://kinder-backbacon-55938.herokuapp.com/tasks/${id}`;
             fetch(url, {
                 method: "DELETE"
             })
@@ -98,7 +98,7 @@ const Home = () => {
         const complete = window.confirm('are you sure completed the task ')
         const CompletedTask = { text };
         if (complete) {
-            fetch(`http://localhost:5000/completedTask/${id}`, {
+            fetch(`https://kinder-backbacon-55938.herokuapp.com/completedTask/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-type': "application/json"
@@ -114,7 +114,7 @@ const Home = () => {
                 })
             
 
-            fetch( `http://localhost:5000/tasks/${id}`, {
+            fetch( `https://kinder-backbacon-55938.herokuapp.com/tasks/${id}`, {
                 method: "DELETE"
             })
                 .then(res => res.json())
