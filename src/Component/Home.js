@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import Item from './Item';
-import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
+import { FaRegTrashAlt, FaPencilAlt, FaCheck } from 'react-icons/fa';
 // const axios = require('axios').default;
 const Home = () => {
 
     const [text, setText] = useState("");
     const [todo, setTodo] = useState([]);
     const [isUpdating, setUpdating] = useState("");
+    const [complete , setComplete] = useState(false);
 
 
 
@@ -35,26 +36,41 @@ const Home = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
             })
         setText('')
     };
 
 
 
+    const updateTodo = (id, text) => {
+        setUpdating(id);
+        setText(text);
+    }
 
-    const addUpdateTodo = () => {
-        // if (isUpdating === "") {
 
-        // }else{
-        //     axios.post("http://localhost:5000/update-todo", { _id: isUpdating, text })
-        //       .then((res) => {
-        //         console.log(res.data);
-        //         setText("");
-        //         setUpdating("");
-        //       })
-        //       .catch((err) => console.log(err));
-        //   }
+    const addUpdateTodo = (id, text) => {
+        if (isUpdating === "") {
+            fetch(`http://localhost:5000/tasks/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+                .then(res => res.json())
+                .then(data => console.log(data))
+            // setText('');
+            // setUpdating('');
+
+        }
+
+        else {
+            fetch(`http://localhost:5000/tasks/${id}, text}`)
+                .then(res => {
+                    console.log(res.data);
+                    setText('');
+                })
+        }
     }
 
 
@@ -73,14 +89,42 @@ const Home = () => {
                     const remainingTask = todo.filter(task => task._id !== id)
                     setTodo(remainingTask);
                 })
+            
         }
     }
 
+    const completed = (id, text) => {
+        const complete = window.confirm('are you sure completed the task ')
+        const CompletedTask = { text };
+        if (complete) {
+            fetch(`http://localhost:5000/completedTask/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-type': "application/json"
+                },
+                body: JSON.stringify(CompletedTask)
+            })
+                .then(res => res.json())
+                .then(data => {
+                console.log(data)
+                setComplete(data)
+                console.log(complete);
 
+                })
+            
 
-    const updateTodo = (_id, text) => {
-
+            fetch( `http://localhost:5000/tasks/${id}`, {
+                method: "DELETE"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    // console.log(data);
+                    const remainingTask = todo.filter(task => task._id !== id)
+                    setTodo(remainingTask);
+                })
+        }
     }
+
 
 
     return (
@@ -112,11 +156,11 @@ const Home = () => {
                         <div className="item flex justify-center items-center ">
                             <div className="text-left m-1 p-2  bg-slate-600 text-white  w-96 flex justify-between items-center">
                                 <div className='flex  '>
-                                    <input className='mr-2' type="checkbox" id="html" name="fav_language" value={item.text}></input>
-                                    <p>{item.text}</p>
+                                    <i className="ri-pencil-fill mr-3 cursor-pointer" onClick={() => completed(item._id, item.text)}><FaCheck /> </i>
+                                    <p>{item.text}</p> 
                                 </div>
-                                <div className="icons flex j">
-                                    <i className="ri-pencil-fill mr-3 cursor-pointer" onClick={() => updateTodo(item._id)}><FaPencilAlt /> </i>
+                                <div className="icons flex ">
+                                    <i className="ri-pencil-fill mr-3 cursor-pointer" onClick={() => updateTodo(item._id, item.text)}><FaPencilAlt /> </i>
                                     <i className="ri-delete-bin-7-fill cursor-pointer" onClick={() => deleteTodo(item._id)}><FaRegTrashAlt /> </i>
                                 </div>
                             </div>
