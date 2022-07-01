@@ -50,8 +50,9 @@ const Home = () => {
 
 
     const addUpdateTodo = (id, text) => {
+        const newData = text;
         if (isUpdating === "") {
-            fetch(`http://localhost:5000/tasks/${id}`, {
+            fetch(`http://localhost:5000/tasks/${text}`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json'
@@ -64,13 +65,13 @@ const Home = () => {
 
         }
 
-        else {
-            fetch(`http://localhost:5000/tasks/${id}, text}`)
-                .then(res => {
-                    console.log(res.data);
-                    setText('');
-                })
-        }
+        // else {
+        //     fetch(`http://localhost:5000/tasks/${id}, text}`)
+        //         .then(res => {
+        //             console.log(res.data);
+        //             setText('');
+        //         })
+        // }
     }
 
 

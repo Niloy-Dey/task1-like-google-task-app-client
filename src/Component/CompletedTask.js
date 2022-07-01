@@ -21,7 +21,7 @@ const CompletedTask = () => {
             })
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     const remainingTask = completedTask.filter(task => task._id !== id)
                     // console.log(remainingTask);
                     setCompletedTask(remainingTask);
