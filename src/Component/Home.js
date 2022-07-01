@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-const axios = require('axios').default;
+// const axios = require('axios').default;
 const Home = () => {
 
     const [text, setText] = useState("");
@@ -27,6 +27,8 @@ const Home = () => {
         })
         setText('')
     };
+
+
 
 
     const addUpdateTodo = () => {
