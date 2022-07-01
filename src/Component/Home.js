@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Item from './Item';
+// import Item from './Item';
+import { FaRegTrashAlt, FaPencilAlt } from 'react-icons/fa';
 // const axios = require('axios').default;
 const Home = () => {
 
@@ -12,29 +13,30 @@ const Home = () => {
     // use effect for showing added tasks
     useEffect(() => {
         fetch('http://localhost:5000/tasks')
-        .then(res => res.json())
-        .then(data => setTodo(data))
-    },[])
+            .then(res => res.json())
+            .then(data => setTodo(data))
+    }, [])
 
 
-    
+
     const handleSubmit = event => {
         event.preventDefault();
         console.log('form submitted');
         console.log(text);
-        const task = {text};
-        const url= 'http://localhost:5000/tasks';
+        const task = { text };
+
+        const url = 'http://localhost:5000/tasks';
         fetch(url, {
-            method:'POST',
-            headers:{
+            method: 'POST',
+            headers: {
                 'Content-type': "application/json"
             },
-            body:JSON.stringify(task)
+            body: JSON.stringify(task)
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+            })
         setText('')
     };
 
@@ -43,7 +45,7 @@ const Home = () => {
 
     const addUpdateTodo = () => {
         // if (isUpdating === "") {
-    
+
         // }else{
         //     axios.post("http://localhost:5000/update-todo", { _id: isUpdating, text })
         //       .then((res) => {
@@ -56,15 +58,30 @@ const Home = () => {
     }
 
 
-    const deleteTodo = (_id) => {
-        
+
+
+    const deleteTodo = (id) => {
+        const proceed = window.confirm('Are you sure  delete this task');
+        if (proceed) {
+            const url = `http://localhost:5000/tasks/${id}`;
+            fetch(url, {
+                method: "DELETE"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data);
+                    const remainingTask = todo.filter(task => task._id !== id)
+                    setTodo(remainingTask);
+                })
+        }
     }
+
 
 
     const updateTodo = (_id, text) => {
-        
+
     }
-    
+
 
     return (
         <div className='bg-blue-100 py-20 '>
@@ -81,22 +98,32 @@ const Home = () => {
                         onChange={event => setText(event.target.value)}
                         autoComplete="off"
                     />
-                    {/* <button className="m-2 bg-slate-600 text-white btn " onClick={addUpdateTodo}>{isUpdating ? "Update" : "Add"}</button> */}
-                    <input 
-                    type="submit" 
-                    className="m-2 bg-slate-600 text-white btn "
-                    value={isUpdating ? "Update" : "Add"}
+                    <input
+                        onClick={addUpdateTodo}
+                        type="submit"
+                        className="m-2 bg-slate-600 text-white btn "
+                        value={isUpdating ? "Update" : "Add"}
                     />
-                    
                 </form>
             </div>
-            <div className="list   ">
-          {todo.map(item => <Item key={item._id} text={item.text}
-            remove={() => deleteTodo(item._id)}
-            update={() => updateTodo(item._id, item.text)} />)}
-        </div>
+            <div className="list">
+                {
+                    todo.map(item =>
+                        <div className="item flex justify-center items-center ">
+                            <div className="text-left m-1 p-2  bg-slate-600 text-white  w-96 flex justify-between items-center">
+                                <div className='flex  '>
+                                    <input className='mr-2' type="checkbox" id="html" name="fav_language" value={item.text}></input>
+                                    <p>{item.text}</p>
+                                </div>
+                                <div className="icons flex j">
+                                    <i className="ri-pencil-fill mr-3 cursor-pointer" onClick={() => updateTodo(item._id)}><FaPencilAlt /> </i>
+                                    <i className="ri-delete-bin-7-fill cursor-pointer" onClick={() => deleteTodo(item._id)}><FaRegTrashAlt /> </i>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+            </div>
         </div>
     );
 };
-
 export default Home;
