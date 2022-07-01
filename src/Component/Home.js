@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Item from './Item';
+import { FaBeer } from 'react-icons/fa';
 // const axios = require('axios').default;
 const Home = () => {
 

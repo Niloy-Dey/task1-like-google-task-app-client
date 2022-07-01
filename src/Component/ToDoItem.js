@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { FaBeer } from 'react-icons/fa';
 const ToDoItem = ({text, remove, update}) => {
     return (
         <div className="item flex justify-center items-center ">
